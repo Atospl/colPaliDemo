@@ -1,0 +1,8 @@
+handlers:
+  - sink: ext://sys.stderr
+    format: "{time:YYYY-MM-DD HH:mm} | {level.name:<8} | {message}"
+  - sink: colpali.log
+    format: "{time:YYYY-MM-DD HH:mm:ss} | {level} | {message}"
+    enqueue: true
+extra:
+  common_to_all: default
