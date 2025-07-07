@@ -7,7 +7,9 @@ def get_model_and_processor(model_name: str):
     """Loads the model and processor."""
     model = ColQwen2ForRetrieval.from_pretrained(
         model_name,
-        device_map="mps",
+        torch_dtype=torch.bfloat16,
+        device_map="auto",  # "cpu", "cuda", or "mps" for Apple Silicon
+        attn_implementation="flash_attention_2" if is_flash_attn_2_available() else "sdpa",
     ).eval()
 
     processor = ColQwen2Processor.from_pretrained(model_name)
