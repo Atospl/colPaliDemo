@@ -1,4 +1,3 @@
-from typing import cast
 import torch
 from PIL import Image
 

@@ -8,8 +8,9 @@ and both document and text vector embeddings.
 """
 
 import lancedb
-import numpy as np
 import pyarrow as pa
+
+VECTOR_TYPE = pa.list_(pa.list_(pa.float16(), 128))  # type for ColQwen2 embeddings
 
 schema = pa.schema(
     [
@@ -17,7 +18,7 @@ schema = pa.schema(
         pa.field("filename", pa.string()),
         pa.field("page", pa.uint64()),
         pa.field("text", pa.string()),
-        pa.field("vector", pa.list_(pa.list_(pa.float32(), 256))),
+        pa.field("vector", VECTOR_TYPE),
         # pa.field("text_vector", pa.list_(pa.float32(), 1024)),
     ]
 )
@@ -27,5 +28,5 @@ db = lancedb.connect(
     uri="./db",
 )
 
-tbl = db.create_table("colpali_eval", schema=schema)
+tbl = db.create_table("colpali_eval", schema=schema, exist_ok=True)
 # tbl.create_index(metric="cosine", vector_column_name="vector")
